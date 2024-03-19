@@ -1,11 +1,14 @@
 
-import { initializeApp } from "firebase/app";
-import firebase from 'firebase/compat/app'
+//import { initializeApp } from "firebase/app";
+
 import'firebase/compat/auth';
+import firebase from 'firebase/compat/app'
 import 'firebase/compat/database'
 
+
+
 const firebaseConfig = {
-  apiKey: "AIzaSyABCp6AHwMzfv-VLBgjcNND80zQPy1lPx4",
+   apiKey: "AIzaSyABCp6AHwMzfv-VLBgjcNND80zQPy1lPx4",
   authDomain: "driver-iq.firebaseapp.com",
   projectId: "driver-iq",
   storageBucket: "driver-iq.appspot.com",
@@ -14,5 +17,5 @@ const firebaseConfig = {
 };
 
 
-const app = initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig);
 export default app
