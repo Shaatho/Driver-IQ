@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import './login.css'
-import { Link } from "react-router-dom";
+import { Link,Navigate} from "react-router-dom";
 import firebase from './firebaseConfig';
+
 
 const Signup = () => {
     const [email, setEmail] = useState('')
     const [pass, setPass] = useState('')
+    const [loggedIn, setLoggedIn] = useState(false);
+
     const submit = async(e)=>{
         e.preventDefault()
         try
@@ -13,6 +16,7 @@ const Signup = () => {
             const user =await firebase.auth().signInWithEmailAndPassword(email, pass)
             if(user){
                 alert("Login Successfully")
+                  setLoggedIn(true);
             }
 
         }catch(error)
@@ -20,6 +24,9 @@ const Signup = () => {
             alert(error)
 
         }
+    };
+    if (loggedIn) {
+        return <Navigate to="/home" />; // Redirect to home page if loggedIn is true
     }
     return (
         <div>
@@ -33,8 +40,8 @@ const Signup = () => {
             <div className="box">
                 <input type ='text' value={pass} placeholder="Password" onChange={(e) => setPass(e.target.value)}></input>
             </div>
-            <p>Already have an account <Link to="//login">Login Now</Link></p>
-            <button onClick={submit}>signup</button>
+            <p>Don't have an account <Link to="/signup">create account</Link></p>
+            <button onClick={submit}>login</button>
          </div>
         </div>
     )

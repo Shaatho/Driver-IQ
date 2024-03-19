@@ -1,13 +1,16 @@
 import React, { useState } from "react";
-import '/signup.css'
+import './signup.css'
 import { Link } from "react-router-dom";
 import firebase from './firebaseConfig';
 
 const Login = () => {
+    
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [pass, setPass] = useState('')
-    const submit = async(e)=>{
+
+    const submit = async(e) =>{
+        
         e.preventDefault()
         try
         {
@@ -37,8 +40,8 @@ const Login = () => {
             <div className="box">
                 <input type ='text' value={pass} placeholder="Password" onChange={(e) => setPass(e.target.value)}></input>
             </div>
-            <p>Don't have an account <Link to="/">Create Account</Link></p>
-            <button onClick={submit}>Login</button>
+            <p>Already have an account <Link to="/login">Login</Link></p>
+            <button onClick={submit}>Signup</button>
          </div>
         </div>
     )
