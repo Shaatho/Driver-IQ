@@ -1,25 +1,30 @@
 import React from 'react';
 import './App.css';
-import Login from './login' ;
+
 
 
 function App() {
   
+
 const handleClick = () =>{
-  window.location.href= "./login";
+  window.location.href= "./signup";
   
 }
 
-  return (
+  return  (
+    
+
     <div className="dark">
+      
       {
-        <button onClick={handleClick}>Login</button>
+        <button onClick={handleClick}>Signup</button>
       }
       {
         <h2>Landing Page</h2>
       }
     </div>
   );
+  
 }
 
 export default App;

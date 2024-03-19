@@ -6,6 +6,7 @@ import App from './App';
 import Signup from './signup';
 import "./signup.css"
 import Home from './Home';
+import Chapters from './Chapters';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -17,6 +18,7 @@ root.render(
       <Route path="/login" element={<Login/>}/>
       <Route path="/signup" element={<Signup/>}/>
       <Route path='/home' element={<Home/>}/>
+      <Route path='/chapters' element={<Chapters/>}/>
     </Routes>
     </BrowserRouter>
   </div>
