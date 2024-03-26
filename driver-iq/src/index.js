@@ -7,6 +7,7 @@ import Signup from './signup';
 import "./signup.css"
 import Home from './Home';
 import Chapters from './Chapters';
+import Admin from './admin';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -19,6 +20,7 @@ root.render(
       <Route path="/signup" element={<Signup/>}/>
       <Route path='/home' element={<Home/>}/>
       <Route path='/chapters' element={<Chapters/>}/>
+      <Route path='/admin' element={<Admin/>}/>
     </Routes>
     </BrowserRouter>
   </div>

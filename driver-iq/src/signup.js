@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import './signup.css'
 import { Link } from "react-router-dom";
-import firebase from './firebaseConfig';
+import { app, db, firebase } from './firebaseConfig'; // Import app, db, and firebase from firebaseConfig
+
 
 const Login = () => {
     
@@ -9,22 +10,19 @@ const Login = () => {
     const [email, setEmail] = useState('')
     const [pass, setPass] = useState('')
 
-    const submit = async(e) =>{
-        
-        e.preventDefault()
-        try
-        {
-            const user =await firebase.auth().createUserWithEmailAndPassword(email, pass)
-            if(user){
-                alert("Account Created Successfully")
+    const submit = async (e) => {
+        e.preventDefault();
+        try {
+            const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, pass);
+            const user = userCredential.user;
+            if (user) {
+                alert("Account Created Successfully");
             }
-
-        }catch(error)
-        {
-            alert(error)
-
+        } catch (error) {
+            alert(error.message);
         }
-    }
+    };
+    
     return (
         <div>
          <div className="main_container_signup">
