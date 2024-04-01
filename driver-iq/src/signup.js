@@ -19,7 +19,7 @@ const Login = () => {
                 alert("Account Created Successfully");
             }
         } catch (error) {
-            alert(error.message);
+            alert(error.message);//error handling
         }
     };
     
