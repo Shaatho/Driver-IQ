@@ -8,6 +8,7 @@ import "./signup.css"
 import Home from './Home';
 import Chapters from './Chapters';
 import Admin from './admin';
+import ChapterFlashcards from './Flashcards';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -21,7 +22,8 @@ root.render(
       <Route path='/home' element={<Home/>}/>
       <Route path='/chapters' element={<Chapters/>}/>
       <Route path='/admin' element={<Admin/>}/>
-    </Routes>
+      <Route path='/chapter/:id' element = {<ChapterFlashcards/>}/>
+      </Routes>
     </BrowserRouter>
   </div>
 );
