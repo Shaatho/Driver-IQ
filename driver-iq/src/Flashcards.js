@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom'; // Import Link from react-router-dom
 import { db } from './firebaseConfig';
 import './Flashcards.css'; // Import CSS file for styling
 import Navbar from './NavBar'; // Assuming the Navbar component is in the same directory
@@ -79,6 +79,8 @@ const Flashcards = () => {
                                     Next
                                 </button>
                             </div>
+                            {/* Quiz Button */}
+                            <Link to={`/quiz/${id}`} className="quiz-button">Take Quiz</Link>
                         </div>
                     )}
                 </div>

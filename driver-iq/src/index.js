@@ -9,6 +9,8 @@ import Home from './Home';
 import Chapters from './Chapters';
 import Admin from './admin';
 import ChapterFlashcards from './Flashcards';
+import Quiz from './quiz';
+import QuizResults from './quizResults';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -23,6 +25,8 @@ root.render(
       <Route path='/chapters' element={<Chapters/>}/>
       <Route path='/admin' element={<Admin/>}/>
       <Route path='/chapter/:id' element = {<ChapterFlashcards/>}/>
+      <Route path='/quiz/:id' element ={<Quiz/>}/>
+      <Route path='/quizResults/:id' element ={<QuizResults/>}/>
       </Routes>
     </BrowserRouter>
   </div>

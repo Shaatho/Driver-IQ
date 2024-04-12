@@ -1,7 +1,47 @@
-.dark {
-  background-color: #0b2340;
+body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
-  color: #fff; /* Optional: Adjust text color for better contrast */
+  font-family: Arial, sans-serif;
+  background-color: rgb(238, 238, 241); /* Dark blue background color */
+  color: #09053a; /* White text color */
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.content {
+  text-align: center;
+}
+
+h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 1.2 rem;
+  margin-bottom: 20px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.login-button, .signup-button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  text-decoration: none;
+  color: #fff;
+  background-color: #1976d2; /* Blue button color */
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover, .signup-button:hover {
+  background-color: #1565c0; /* Darker blue on hover */
 }

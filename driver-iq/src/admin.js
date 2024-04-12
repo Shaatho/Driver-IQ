@@ -34,7 +34,7 @@ const Admin = () => {
     const questionData = {
       question: question,
       options: options,
-      answer: (parseInt(answer) + 1).toString(), // Convert back to string
+      answer: (parseInt(answer)).toString(), // Convert back to string
     };
 
     if (imageFile) {
@@ -113,13 +113,13 @@ const Admin = () => {
             type="text"
             value={option}
             onChange={(e) => handleOptionChange(index, e.target.value)}
-            placeholder={`Option ${index + 1}`}
+            placeholder={`Option ${index}`}
           />
         ))}
         <select value={answer} onChange={(e) => setAnswer(e.target.value)} defaultValue={answer}>
           {options.map((option, index) => (
-            <option key={index} value={index + 1}>
-              Option {index + 1}
+            <option key={index} value={index}>
+              Option {index}
             </option>
           ))}
         </select>
