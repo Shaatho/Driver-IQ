@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { firebase } from './firebaseConfig'; // Import app, db, and firebase from firebaseConfig
+import { firebase } from './firebaseConfig'; // Import firebase from firebaseConfig
 
 
 const Signup = () => {
@@ -16,19 +16,18 @@ const Signup = () => {
             const user = userCredential.user;
             
             if (user) {
-                // Check if the user is an admin (You need to implement this)
+                // All authenticated users are considered logged in
+                setLoggedIn(true);
+                
+                // Check if the user is an admin
                 const isAdminUser = await checkAdminStatus(user);
-                if (isAdminUser) {
-                    setLoggedIn(true);
-                    setIsAdmin(true);
-                } else {
-                    alert("You are not authorized as admin");
-                }
+                setIsAdmin(isAdminUser);
             }
         } catch (error) {
             alert(error.message);
         }
     };
+
     const checkAdminStatus = async (user) => {
         // Define the admin email
         const adminEmail = 'admin@gmail.com';
@@ -41,7 +40,6 @@ const Signup = () => {
     
         return isAdmin;
     };
-    
 
     if (loggedIn) {
         if (isAdmin) {
