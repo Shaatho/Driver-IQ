@@ -1,0 +1,111 @@
+/* Reset default margin and padding */
+body, h1, h2, h3, p, ul {
+    margin: 0;
+    padding: 0;
+  
+}
+
+/* Home page styles */
+.home-page {
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.logo h1 {
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
+.logo p {
+    font-size: 1rem;
+}
+
+nav ul {
+    list-style-type: none;
+}
+
+nav ul li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #ece7e7;
+    font-size: 1.3rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+
+    transition: background-color 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: rgb(25, 94, 117);
+}
+
+.hero {
+    background-image: url('https://th.bing.com/th/id/R.4cd335ee1c8c28893559281d67ce1950?rik=tGVyhZcGuiZEEQ&riu=http%3a%2f%2fwww.drivinglessonscork.ie%2fimages%2fDriving+Test+Photo.jpg&ehk=Tqhk8GKkxqQbz4whpEtLIjZXfP4CMk8yDC3U1Z170oI%3d&risl=&pid=ImgRaw&r=0');
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+}
+
+.hero-content {
+    max-width: 600px;
+}
+
+.hero h2 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.features {
+    display: flex;
+    justify-content: space-around;
+    padding: 40px 20px;
+}
+
+.feature {
+    max-width: 300px;
+    text-align: center;
+}
+
+.feature i {
+    font-size: 3rem;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.feature h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.feature p {
+    font-size: 1rem;
+}
+
+

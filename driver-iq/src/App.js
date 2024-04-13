@@ -6,8 +6,8 @@ const  App = () => {
     return (
         <div className="container">
             <div className="content">
-                <h1>Driver IQ</h1>
-                <p>Making passing at the first try an easy feat</p>
+                <h1 >DriverIQ</h1>
+                <p className='slogan'>Making it easy to pass on the first try</p>
                 <div className="buttons">
                     {/* Link to login page */}
                     <Link to="/login" className="login-button">Login</Link>

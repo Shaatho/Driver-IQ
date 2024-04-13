@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { app, db, firebase } from './firebaseConfig'; // Import app, db, and firebase from firebaseConfig
+import { firebase } from './firebaseConfig'; // Import app, db, and firebase from firebaseConfig
 
 
 const Signup = () => {
