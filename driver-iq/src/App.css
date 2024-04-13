@@ -17,8 +17,8 @@ body {
   text-align: center;
 }
 
-h1 {
-  font-size: 3rem;
+.heading {
+  font-size: 4rem;
   margin-bottom: 10px;
 }
 
