@@ -67,7 +67,7 @@ const Flashcards = () => {
                             {showAnswers && (
                                 <ul className="answers">
                                     <li>
-                                        {questions[currentQuestionIndex].options[parseInt(questions[currentQuestionIndex].answer) - 1]}
+                                        {questions[currentQuestionIndex].options[parseInt(questions[currentQuestionIndex].answer)]}
                                     </li>
                                 </ul>
                             )}
