@@ -13,7 +13,7 @@ const Home = () => {
                 <div className="hero-content">
                     <h2>Making it easy to pass on the first try</h2>
                     <p>DriverIQ offers study flashcards,chapter quizzes and a self practise test to help you prepare for your theory test .</p>
-                    <Link to="/about" className="btn btn-primary">Take Practise Test</Link>
+                    <Link to="/PractiseTest" className="btn btn-primary">Take Practise Test</Link>
                 </div>
             </section>
             <section className="features">

@@ -11,7 +11,7 @@ import Admin from './admin';
 import ChapterFlashcards from './Flashcards';
 import Quiz from './quiz';
 import QuizResults from './quizResults';
-
+import PracticeTest from './PractiseTest';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -27,6 +27,7 @@ root.render(
       <Route path='/chapter/:id' element = {<ChapterFlashcards/>}/>
       <Route path='/quiz/:id' element ={<Quiz/>}/>
       <Route path='/quizResults/:id' element ={<QuizResults/>}/>
+      <Route path='/PractiseTest' element ={<PracticeTest/>}/>
       </Routes>
     </BrowserRouter>
   </div>
