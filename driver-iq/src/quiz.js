@@ -40,40 +40,41 @@ const Quiz = () => {
         };
         fetchQuestions();
     }, [id]);
-    const handleOptionSelect = (questionId, optionIndex) => {
-        setSelectedOptions(prevState => ({
-            ...prevState,
-            [questionId]: optionIndex, // Update the selected option index for the corresponding question ID
-        }));
-    };
-    
-    
+ 
+const handleOptionSelect = (questionId, optionIndex) => {
+    setSelectedOptions(prevState => ({
+        ...prevState,
+        [questionId]: optionIndex.toString(), // Update the selected option index as a string
+    }));
+};
 
-    const handleFinishQuiz = () => {
-        let finalScore = 0;
-        questions.forEach(question => {
-            const selectedOption = selectedOptions[question.id];
-            const correctAnswer = question.answer;
-            
-            // Log selected option and correct answer for each question
-            console.log(`Question: ${question.question}`);
-            console.log(`Selected Option: ${selectedOption}`);
-            console.log(`Correct Answer: ${correctAnswer}`);
-            
-            // Check if the selected option matches the correct answer
-            if (selectedOption === correctAnswer) {
-                finalScore++;
-            }
-        });
-    
-        // Log the final score before setting it
-        console.log("Final Score:", finalScore);
+   
+
+// Quiz component
+const handleFinishQuiz = () => {
+    let finalScore = 0;
+    questions.forEach(question => {
+        const selectedOption = selectedOptions[question.id]; // Parse the selected option as a string
+        const correctAnswerIndex = question.answer; // Parse the correct answer index as a string
         
-        // Set the final score and mark the quiz as completed
-        setScore(finalScore);
-        setQuizCompleted(true);
-    };
+        // Log selected option and correct answer for each question
+        console.log(`Question: ${question.question}`);
+        console.log(`Selected Option: ${selectedOption}`);
+        console.log(`Correct Answer: ${correctAnswerIndex}`);
+        
+        // Check if the selected option matches the correct answer
+        if (selectedOption === correctAnswerIndex) {
+            finalScore++;
+        }
+    });
+
+    // Log the final score before setting it
+    console.log("Final Score:", finalScore);
     
+    // Set the final score and mark the quiz as completed
+    setScore(finalScore);
+    setQuizCompleted(true);
+};
 
     if (loading) return <div className="loading">Loading...</div>;
     if (error) return <div className="error">{error}</div>;
