@@ -1,0 +1,35 @@
+.practice-test-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.timer {
+  position: absolute;
+  top: 10;
+  right: 0;
+  padding: 10px;
+}
+
+.question-container {
+  margin-top: 50px; /* Adjust as needed */
+}
+
+.options {
+  list-style: none;
+  padding: 0;
+}
+
+.option {
+  margin-bottom: 10px;
+}
+
+/* Flexbox layout for buttons */
+.button-container {
+  display: flex;
+}
+
+button {
+  margin-right: 10px;
+}

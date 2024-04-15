@@ -12,6 +12,7 @@ import ChapterFlashcards from './Flashcards';
 import Quiz from './quiz';
 import QuizResults from './quizResults';
 import PracticeTest from './PractiseTest';
+import Statistics from './statistics';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -28,6 +29,7 @@ root.render(
       <Route path='/quiz/:id' element ={<Quiz/>}/>
       <Route path='/quizResults/:id' element ={<QuizResults/>}/>
       <Route path='/PractiseTest' element ={<PracticeTest/>}/>
+      <Route path='/Statistics' element ={<Statistics/>}/>
       </Routes>
     </BrowserRouter>
   </div>
