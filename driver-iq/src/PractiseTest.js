@@ -2,13 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { db, firebase } from './firebaseConfig';
 import './PractiseTest.css';
 import Navbar from './NavBar';
+import Statistics from './statistics'; // Import the Statistics component
+import { useNavigate } from 'react-router-dom';
+
 
 const PracticeTest = () => {
+  const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [timer, setTimer] = useState(30 * 60); // 30 minutes in seconds
-
+  const [userAnswers, setUserAnswers] = useState([]); // Store user answers
+  const [isTestFinished, setIsTestFinished] = useState(false); // Track if test is finished
+  
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
@@ -78,6 +84,12 @@ const PracticeTest = () => {
 
   const selectAnswer = (optionIndex) => {
     setSelectedAnswer(optionIndex);
+    // Update userAnswers state with the selected answer for the current question
+    setUserAnswers(prevUserAnswers => {
+      const updatedAnswers = [...prevUserAnswers];
+      updatedAnswers[currentQuestionIndex] = optionIndex;
+      return updatedAnswers;
+    });
   };
 
   const speakQuestion = () => {
@@ -93,8 +105,13 @@ const PracticeTest = () => {
   };
 
   const handleFinish = () => {
-    window.location.href = '/statistics';
+    // Navigate to statistics page and pass userAnswers and questions as URL query parameters
+    setIsTestFinished(true);
+
+
+  
   };
+  
 
   return (
     <div>
@@ -123,16 +140,18 @@ const PracticeTest = () => {
               </ul>
             </>
           )}
-        </div>
-        <div className="button-container">
-          <button className="speak-button" onClick={speakQuestion}>Read Question</button>
-          <button className="previous-button" onClick={previousQuestion}>Previous Question</button>
-          <button className="next-button" onClick={nextQuestion}>Next Question</button>
-          <button className="finish-button" onClick={handleFinish}>Finish</button>
-        </div>
+      
+      </div>
+      <div className="button-container">
+        <button className="speak-button" onClick={speakQuestion}>Read Question</button>
+        <button className="previous-button" onClick={previousQuestion}>Previous Question</button>
+        <button className="next-button" onClick={nextQuestion}>Next Question</button>
+        <button className="finish-button" onClick={handleFinish}>Finish</button>
       </div>
     </div>
-  );
+    {isTestFinished && <Statistics userAnswers={userAnswers} questions={questions} />}
+  </div>
+);
 };
 
 export default PracticeTest;
