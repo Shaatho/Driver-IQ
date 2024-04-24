@@ -1,157 +1,173 @@
 import React, { useState, useEffect } from 'react';
-import { db, firebase } from './firebaseConfig';
-import './PractiseTest.css';
-import Navbar from './NavBar';
-import Statistics from './statistics'; // Import the Statistics component
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { db } from './firebaseConfig';
+import './PractiseTest.css'; // Corrected CSS file import
+import Navbar from './NavBar'; // Import the NavBar component
+import Statistics from './statistics'; // Import the QuizResults component
 
+const PractiseTest = () => {
+    const { id } = useParams(); 
+    const [questions, setQuestions] = useState([]);
+    const [selectedOptions, setSelectedOptions] = useState({});
+    const [score, setScore] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [quizCompleted, setQuizCompleted] = useState(false);
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [timer, setTimer] = useState(30 * 60 * 1000); // 30 minutes in milliseconds
 
-const PracticeTest = () => {
-  const navigate = useNavigate();
-  const [questions, setQuestions] = useState([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [timer, setTimer] = useState(30 * 60); // 30 minutes in seconds
-  const [userAnswers, setUserAnswers] = useState([]); // Store user answers
-  const [isTestFinished, setIsTestFinished] = useState(false); // Track if test is finished
-  
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const chaptersSnapshot = await db.collection('Matshwao').get();
-        const allQuestions = [];
-        chaptersSnapshot.forEach((chapter) => {
-          const chapterName = chapter.id;
-          const chapterQuestionsSnapshot = chapter.ref.collection('Questions').get();
-          chapterQuestionsSnapshot.then((snapshot) => {
-            snapshot.forEach((doc) => {
-              const questionData = doc.data();
-              allQuestions.push(questionData);
-            });
-            const shuffledQuestions = shuffleArray(allQuestions);
-            const selectedQuestions = shuffledQuestions.slice(0, 30);
-            setQuestions(selectedQuestions);
-          });
-        });
-      } catch (error) {
-        console.error('Error fetching questions:', error);
-        // Display an error message to the user
-      }
+    useEffect(() => {
+        const fetchQuestions = async () => {
+            try {
+                const chaptersSnapshot = await db.collection('Matshwao').get();
+                const chaptersData = chaptersSnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+
+                const allQuestions = [];
+                for (const chapter of chaptersData) {
+                    const chapterQuestionsSnapshot = await db.collection('Matshwao').doc(chapter.id).collection('Questions').get();
+                    const chapterQuestionsData = chapterQuestionsSnapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+                    allQuestions.push(...chapterQuestionsData);
+                }
+
+                const shuffledQuestions = allQuestions.sort(() => Math.random() - 0.5);
+                const selectedQuestions = shuffledQuestions.slice(0, 30);
+
+                setQuestions(selectedQuestions);
+
+                const initialSelectedOptions = {};
+                selectedQuestions.forEach((question) => {
+                    initialSelectedOptions[question.id] = '';
+                });
+                setSelectedOptions(initialSelectedOptions);
+
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching questions:', error);
+                setError('Failed to fetch questions');
+                setLoading(false);
+            }
+        };
+        fetchQuestions();
+    }, []);
+
+    const handleOptionSelect = (questionId, optionIndex) => {
+        setSelectedOptions(prevState => ({
+            ...prevState,
+            [questionId]: optionIndex.toString(),
+        }));
     };
 
-    fetchQuestions();
+    const handleNextQuestion = () => {
+        setCurrentQuestionIndex(prevIndex => prevIndex + 1);
+    };
 
-    const interval = setInterval(() => {
-      setTimer((prevTimer) => prevTimer - 1);
-    }, 1000);
+    const handlePreviousQuestion = () => {
+        setCurrentQuestionIndex(prevIndex => prevIndex - 1);
+    };
+    
+    const handleFinishQuiz = () => {
+        let finalScore = 0;
+        questions.forEach(question => {
+            const selectedOption = selectedOptions[question.id];
+            const correctAnswerIndex = question.answer;
+            if (selectedOption === correctAnswerIndex) {
+                finalScore++;
+            }
+        });
 
-    return () => clearInterval(interval);
-  }, []);
+        setScore(finalScore);
+        setQuizCompleted(true);
+    };
 
-  useEffect(() => {
-    if (timer === 0) {
-      // Timer reached 0, navigate to statistics page
-      handleFinish();
-    }
-  }, [timer]);
-
-  const shuffleArray = (array) => {
-    const shuffledArray = [...array];
-    for (let i = shuffledArray.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
-    }
-    return shuffledArray;
+    const speakQuestion = () => {
+      const synth = window.speechSynthesis;
+      const currentQuestion = questions[currentQuestionIndex];
+      if (synth && currentQuestion) {
+          let speechText = currentQuestion.question + ". Options are: ";
+          currentQuestion.options.forEach((option, index) => {
+              speechText += `${option}. `;
+          });
+          const questionUtterance = new SpeechSynthesisUtterance(speechText);
+          synth.speak(questionUtterance);
+      }
   };
 
-  const nextQuestion = () => {
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setSelectedAnswer(null);
-    } else {
-      // End of questions
-    }
-  };
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTimer(prevTimer => prevTimer - 1000);
+        }, 1000);
 
-  const previousQuestion = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
-      setSelectedAnswer(null);
-    } else {
-      // Beginning of questions
-    }
-  };
+        return () => clearInterval(interval);
+    }, []);
 
-  const selectAnswer = (optionIndex) => {
-    setSelectedAnswer(optionIndex);
-    // Update userAnswers state with the selected answer for the current question
-    setUserAnswers(prevUserAnswers => {
-      const updatedAnswers = [...prevUserAnswers];
-      updatedAnswers[currentQuestionIndex] = optionIndex;
-      return updatedAnswers;
-    });
-  };
+    if (loading) return <div className="loading">Loading...</div>;
+    if (error) return <div className="error">{error}</div>;
 
-  const speakQuestion = () => {
-    const synth = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(questions[currentQuestionIndex].question);
-    synth.speak(utterance);
-  };
+    const currentQuestion = questions[currentQuestionIndex];
 
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
-  };
-
-  const handleFinish = () => {
-    // Navigate to statistics page and pass userAnswers and questions as URL query parameters
-    setIsTestFinished(true);
-
-
-  
-  };
-  
-
-  return (
-    <div>
-      <Navbar onFinish={handleFinish} />
-      <div className="practice-test-container">
-        <div className="timer">Time remaining: {formatTime(timer)}</div>
-        <h1>Practice Test</h1>
-        <div className="question-container">
-          {questions.length > 0 && (
-            <>
-              <p className="question">{questions[currentQuestionIndex].question}</p>
-              <ul className="options">
-                {questions[currentQuestionIndex].options.map((option, index) => (
-                  <li key={index} className="option">
-                    <input
-                      type="radio"
-                      id={`option-${index}`}
-                      name="answer"
-                      value={index}
-                      checked={selectedAnswer === index}
-                      onChange={() => selectAnswer(index)}
-                    />
-                    <label htmlFor={`option-${index}`}>{option}</label>
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-      
-      </div>
-      <div className="button-container">
-        <button className="speak-button" onClick={speakQuestion}>Read Question</button>
-        <button className="previous-button" onClick={previousQuestion}>Previous Question</button>
-        <button className="next-button" onClick={nextQuestion}>Next Question</button>
-        <button className="finish-button" onClick={handleFinish}>Finish</button>
-      </div>
-    </div>
-    {isTestFinished && <Statistics userAnswers={userAnswers} questions={questions} />}
-  </div>
-);
+    return (
+        <>
+            <Navbar />
+            <div className="quiz-container">
+                <h1>Practise Test</h1>
+                <div className="question-container">
+                    {!quizCompleted ? (
+                        <div className="question-card">
+                            <div className="timer-container">
+                                <p>Time Remaining: {formatTime(timer)}</p>
+                            </div>
+                            <h2>Question {currentQuestionIndex + 1}</h2>
+                            {currentQuestion && currentQuestion.imageURL && (
+                                <img src={currentQuestion.imageURL} alt={`Question ${currentQuestionIndex + 1}`} className="question-image" />
+                            )}
+                            <h3>{currentQuestion && currentQuestion.question}</h3>
+                            <ul>
+                                {currentQuestion && currentQuestion.options.map((option, optionIndex) => (
+                                    <li key={optionIndex}>
+                                        <input
+                                            type="radio"
+                                            id={`option${optionIndex}`}
+                                            name={`question${currentQuestionIndex}`}
+                                            value={option}
+                                            checked={parseInt(selectedOptions[currentQuestion.id]) === optionIndex}
+                                            onChange={() => handleOptionSelect(currentQuestion.id, optionIndex)}
+                                        />
+                                        <label htmlFor={`option${optionIndex}`}>{option}</label>
+                                    </li>
+                                ))}
+                            </ul>
+                            <div className="button-container">
+                                {currentQuestionIndex > 0 && (
+                                    <button onClick={handlePreviousQuestion}>Previous</button>
+                                )}
+                                {currentQuestionIndex < questions.length - 1 && (
+                                    <button onClick={handleNextQuestion}>Next</button>
+                                )}
+                                {currentQuestionIndex === questions.length - 1 && (
+                                    <button onClick={handleFinishQuiz}>Finish</button>
+                                )}
+                                <button onClick={speakQuestion}>Speak Question</button>
+                            </div>
+                        </div>
+                    ) : (
+                        <Statistics score={score} questions={questions} selectedOptions={selectedOptions} />
+                    )}
+                </div>
+            </div>
+        </>
+    );
 };
 
-export default PracticeTest;
+const formatTime = (milliseconds) => {
+    const minutes = Math.floor(milliseconds / (1000 * 60));
+    const seconds = Math.floor((milliseconds % (1000 * 60)) / 1000);
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+};
+
+export default PractiseTest;
