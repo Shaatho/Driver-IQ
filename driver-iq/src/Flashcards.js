@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { useParams, Link } from 'react-router-dom';
 import { db } from './firebaseConfig';
-import './Flashcards.css'; // Import CSS file for styling
-import Navbar from './NavBar'; // Assuming the Navbar component is in the same directory
+import './Flashcards.css';
+import Navbar from './NavBar';
 
 const Flashcards = () => {
-    const { id } = useParams(); // Get the chapter ID from URL params
+    const { id } = useParams();
     const [questions, setQuestions] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [showAnswers, setShowAnswers] = useState(false);
@@ -33,12 +33,12 @@ const Flashcards = () => {
 
     const handleNextQuestion = () => {
         setCurrentQuestionIndex(prevIndex => (prevIndex + 1) % questions.length);
-        setShowAnswers(false); // Reset to hide answers for the next question
+        setShowAnswers(false);
     };
 
     const handlePreviousQuestion = () => {
         setCurrentQuestionIndex(prevIndex => (prevIndex - 1 + questions.length) % questions.length);
-        setShowAnswers(false); // Reset to hide answers for the previous question
+        setShowAnswers(false);
     };
 
     if (loading) return <div>Loading...</div>;
@@ -46,7 +46,7 @@ const Flashcards = () => {
 
     return (
         <div>
-            <Navbar /> 
+            <Navbar />
             <div className="flashcards-container">
                 <h1>Flashcards</h1>
                 <div className="flashcard-container">
@@ -54,6 +54,9 @@ const Flashcards = () => {
                         <div className="flashcard">
                             <h2>Question {currentQuestionIndex + 1}</h2>
                             <h3>{questions[currentQuestionIndex].question}</h3>
+                            {questions[currentQuestionIndex].imageURL && ( // Check if imageURL exists
+                                <img src={questions[currentQuestionIndex].imageURL} alt="Question" className="question-image" />
+                            )}
                             {!showAnswers && (
                                 <ul className="options">
                                     {questions[currentQuestionIndex].options.map((option, index) => (
@@ -79,7 +82,6 @@ const Flashcards = () => {
                                     Next
                                 </button>
                             </div>
-                            {/* Quiz Button */}
                             <Link to={`/quiz/${id}`} className="quiz-button">Take Quiz</Link>
                         </div>
                     )}
