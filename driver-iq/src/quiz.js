@@ -41,78 +41,69 @@ const Quiz = () => {
         fetchQuestions();
     }, [id]);
  
-const handleOptionSelect = (questionId, optionIndex) => {
-    setSelectedOptions(prevState => ({
-        ...prevState,
-        [questionId]: optionIndex.toString(), // Update the selected option index as a string
-    }));
-};
-
-   
-
-// Quiz component
-const handleFinishQuiz = () => {
-    let finalScore = 0;
-    questions.forEach(question => {
-        const selectedOption = selectedOptions[question.id]; // Parse the selected option as a string
-        const correctAnswerIndex = question.answer; // Parse the correct answer index as a string
-        
-        // Log selected option and correct answer for each question
-        console.log(`Question: ${question.question}`);
-        console.log(`Selected Option: ${selectedOption}`);
-        console.log(`Correct Answer: ${correctAnswerIndex}`);
-        
-        // Check if the selected option matches the correct answer
-        if (selectedOption === correctAnswerIndex) {
-            finalScore++;
-        }
-    });
-
-    // Log the final score before setting it
-    console.log("Final Score:", finalScore);
+    const handleOptionSelect = (questionId, optionIndex) => {
+        setSelectedOptions(prevState => ({
+            ...prevState,
+            [questionId]: optionIndex.toString(), // Update the selected option index as a string
+        }));
+    };
     
-    // Set the final score and mark the quiz as completed
-    setScore(finalScore);
-    setQuizCompleted(true);
-};
+    const handleFinishQuiz = () => {
+        let finalScore = 0;
+        questions.forEach(question => {
+            const selectedOption = selectedOptions[question.id]; // Parse the selected option as a string
+            const correctAnswerIndex = question.answer; // Parse the correct answer index as a string
+            
+            // Check if the selected option matches the correct answer
+            if (selectedOption === correctAnswerIndex) {
+                finalScore++;
+            }
+        });
+
+        // Set the final score and mark the quiz as completed
+        setScore(finalScore);
+        setQuizCompleted(true);
+    };
 
     if (loading) return <div className="loading">Loading...</div>;
     if (error) return <div className="error">{error}</div>;
 
     return (
         <>
-            <Navbar /> {/* Moved Navbar outside of the main div */}
+            <Navbar />
             <div className="quiz-container">
                 <h1>Quiz</h1>
                 {!quizCompleted ? (
                     <>
-                       {questions.map((question, index) => (
-    <div key={question.id}>
-        <h2>Question {index + 1}</h2>
-        <h3>{question.question}</h3>
-        <ul>
-            {question.options.map((option, optionIndex) => (
-                <li key={optionIndex}>
-                    <input
-                        type="radio"
-                        id={`option${optionIndex}`}
-                        name={`question${index}`}
-                        value={option}
-                        checked={selectedOptions[question.id] === option} // Check if the current option is selected
-                        onChange={() => handleOptionSelect(question.id, option)} // Call handleOptionSelect on change
-                    />
-                    <label htmlFor={`option${optionIndex}`}>{option}</label>
-                </li>
-            ))}
-        </ul>
-    </div>
-))}
+                        {questions.map((question, index) => (
+                            <div key={question.id}>
+                                <h2>Question {index + 1}</h2>
+                                {question.imageURL && ( // Check if imageURL exists
+                                    <img src={question.imageURL} alt={`Question ${index + 1}`} className="question-image" />
+                                )}
+                                <h3>{question.question}</h3>
+                                <ul>
+                                    {question.options.map((option, optionIndex) => (
+                                        <li key={optionIndex}>
+                                            <input
+                                                type="radio"
+                                                id={`option${optionIndex}`}
+                                                name={`question${index}`}
+                                                value={option}
+                                                checked={parseInt(selectedOptions[question.id]) === optionIndex}
+                                                // Check if the current option is selected
+                                                onChange={() => handleOptionSelect(question.id, optionIndex)} // Call handleOptionSelect on change
+                                            />
+                                            <label htmlFor={`option${optionIndex}`}>{option}</label>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
                         <button onClick={handleFinishQuiz}>Finish</button>
                     </>
                 ) : (
-                    // Make sure you're passing the score prop to QuizResults
-                    console.log("QuizResults is being rendered") || <QuizResults score={score} questions={questions} selectedOptions={selectedOptions} />
-
+                    <QuizResults score={score} questions={questions} selectedOptions={selectedOptions} />
                 )}
             </div>
         </>

@@ -13,7 +13,7 @@ const QuizResults = ({ score, questions, selectedOptions }) => {
                     <li key={question.id} className="question-item">
                         <p className="question-text">Question {index + 1}: {question.question}</p>
                         <p className="answer">Correct Answer: {question.options[parseInt(question.answer)]}</p>
-                        <p className="answer">Your Answer: {selectedOptions[question.id]}</p>
+                        <p className="answer">Your Answer: {question.options[parseInt(selectedOptions[question.id])]}</p>
                     </li>
                 ))}
             </ul>

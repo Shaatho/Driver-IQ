@@ -45,3 +45,9 @@
     text-align: center;
     margin-top: 50px;
 }
+.quiz-container img.question-image {
+    max-width: 100%; /* Set maximum width to ensure images don't exceed their container */
+  max-height: 200px; /* Set maximum height to make the images smaller */
+  display: block; /* Ensure the image is a block element for proper sizing */
+  margin: 0 auto; /* Add margin below each image */
+}
