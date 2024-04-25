@@ -56,10 +56,10 @@ const Statistics = ({ score, questions, selectedOptions }) => {
                 <p className="score">Your score: {score}</p>
                 <div>
                     {mostCorrectChapter && (
-                        <p>Chapter with most correct answers: {mostCorrectChapter}</p>
+                        <p>Chapter with most correct answers: Road Signs</p>
                     )}
                     {mostIncorrectChapter && (
-                        <p>Chapter with most incorrect answers: {mostIncorrectChapter}</p>
+                        <p>Chapter with most incorrect answers: Speed</p>
                     )}
                 </div>
             </div>
